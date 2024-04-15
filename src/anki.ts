@@ -11,13 +11,11 @@ import {
 import { filterNoteContent, isSentence, splitMultiTerms } from './anki/note-text-filter';
 
 export interface NoteFields extends NotesInfoItemFields {
-    FrontText: NotesInfoItemField;
-    FrontAudio: NotesInfoItemField;
-    FrontTextExample: NotesInfoItemField;
-    BackText: NotesInfoItemField;
-    BackAudio: NotesInfoItemField;
+    Simplified: NotesInfoItemField;
+    Audio: NotesInfoItemField;
+    Examples: NotesInfoItemField;
+    Definitions: NotesInfoItemField;
     Image: NotesInfoItemField;
-    'Add Reverse': NotesInfoItemField;
 }
 
 export interface NoteForProcessing {
@@ -30,12 +28,12 @@ export async function fetchNotesFromAnki(deckName: string): Promise<NoteForProce
 
     const notesInfo = await fetchNotesInfo<NoteFields>(notesIds);
 
-    const notesWithoutExamples = notesInfo.filter((note) => note.fields.FrontTextExample.value.length === 0);
+    const notesWithoutExamples = notesInfo.filter((note) => note.fields.Examples.value.length === 0);
 
     const notesForProcessing = notesWithoutExamples.map((note): NoteForProcessing => {
         return {
             noteId: note.noteId,
-            text: note.fields.FrontText.value,
+            text: note.fields.Simplified.value,
         };
     });
 
@@ -53,7 +51,7 @@ export async function fetchNotesFromAnki(deckName: string): Promise<NoteForProce
 }
 
 export interface UpdateNoteFields extends UpdateNoteFieldsFields {
-    FrontTextExample: string;
+    Examples: string;
 }
 
 export async function updateNote(noteData: UpdateNoteFieldsNote<UpdateNoteFields>): Promise<void> {

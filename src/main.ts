@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { fetchNotesFromAnki, updateNote } from './anki';
 import * as dotenv from 'dotenv';
 import { fetchExamples } from './openai/get-sentences-from-chatgpt';
 import sleep from './utils/sleep';
 require('axios-debug-log/enable');
 
-const MAX_NOTES_PROCESSED_AT_ONCE = 20;
-const MAX_NOTES_PROCESSED_AT_ONE_RUN = 100;
+const MAX_NOTES_PROCESSED_AT_ONCE = 8;
+const MAX_NOTES_PROCESSED_AT_ONE_RUN = 200;
 
 let notesProcessedCount = 0;
 
@@ -38,12 +40,13 @@ void (async function () {
             const noteId = vocabularyExample.id;
             const examples = vocabularyExample.exampleSentences;
 
-            const fieldText = examples.join('<br>');
+            console.log(`Updating Anki note ${noteId} with ${examples}`)
+            const fieldText = examples.map((example) => `<div class="char_example">${example}</div>`).join('')
 
             const noteForAnki = {
                 id: +noteId,
                 fields: {
-                    FrontTextExample: fieldText,
+                    Examples: fieldText,
                 },
             };
 
