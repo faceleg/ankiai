@@ -4,5 +4,5 @@ export interface AllVocabularyExamples {
 
 export interface VocabularyExamples {
     id: number;
-    exampleSentences: [string, string];
+    exampleSentences: string[];
 }

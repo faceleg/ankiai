@@ -1,8 +1,8 @@
 import { expect, test } from 'vitest';
-import { generatePrompt } from './generate-prompt';
+import { generateBasicVocabularyPromptSegment } from './generate-prompt';
 
 test('generate prompt', () => {
-    const prompt = generatePrompt([
+    const prompt = generateBasicVocabularyPromptSegment([
         {
             noteId: 1,
             text: 'der Foo',
