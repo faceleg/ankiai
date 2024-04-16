@@ -4,5 +4,5 @@ export interface AllPartsOfSpeech {
 
 export interface PartsOfSpeech {
     id: number;
-    partsOfSpeech: string;
+    partsOfSpeech: string[];
 }

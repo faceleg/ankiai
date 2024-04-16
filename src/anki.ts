@@ -14,13 +14,14 @@ export interface NoteFields extends NotesInfoItemFields {
     Simplified: NotesInfoItemField;
     Audio: NotesInfoItemField;
     Examples: NotesInfoItemField;
-    Definitions: NotesInfoItemField;
+    Meaning: NotesInfoItemField;
     Image: NotesInfoItemField;
 }
 
 export interface NoteForProcessing {
     noteId: NoteId;
     text: string; // FrontText in Anki
+    definitions: string;
 }
 
 export async function fetchNotesFromAnki(deckName: string): Promise<NoteForProcessing[]> {
@@ -34,6 +35,7 @@ export async function fetchNotesFromAnki(deckName: string): Promise<NoteForProce
         return {
             noteId: note.noteId,
             text: note.fields.Simplified.value,
+            definitions: note.fields.Meaning.value
         };
     });
 
@@ -41,6 +43,7 @@ export async function fetchNotesFromAnki(deckName: string): Promise<NoteForProce
         return {
             noteId: note.noteId,
             text: filterNoteContent(note.text),
+            definitions: filterNoteContent(note.definitions)
         };
     });
 
