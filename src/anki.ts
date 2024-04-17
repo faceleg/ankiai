@@ -15,6 +15,7 @@ export interface NoteFields extends NotesInfoItemFields {
     Audio: NotesInfoItemField;
     Examples: NotesInfoItemField;
     Meaning: NotesInfoItemField;
+    Definitions: NotesInfoItemField;
     Image: NotesInfoItemField;
 }
 
@@ -30,12 +31,12 @@ export async function fetchNotesFromAnki(deckName: string): Promise<NoteForProce
     const notesInfo = await fetchNotesInfo<NoteFields>(notesIds);
 
     const notesWithoutExamples = notesInfo.filter((note) => note.fields.Examples.value.length === 0);
-
     const notesForProcessing = notesWithoutExamples.map((note): NoteForProcessing => {
         return {
             noteId: note.noteId,
             text: note.fields.Simplified.value,
-            definitions: note.fields.Meaning.value
+            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+            definitions: ((): string => note.fields.Meaning ? note.fields.Meaning.value : note.fields.Definitions.value)()
         };
     });
 
