@@ -29,13 +29,13 @@ test('Splits notes with multiple terms', () => {
         {
             noteId: 1,
             text: 'der Foo, der Bar',
-            definitions: 'This is the definition'
+            definitions: 'This is the definition',
         },
 
         {
             noteId: 2,
             text: 'die FooBaz',
-            definitions: 'This is the second definition'
+            definitions: 'This is the second definition',
         },
     ];
 
@@ -43,17 +43,17 @@ test('Splits notes with multiple terms', () => {
         {
             noteId: 1,
             text: 'der Foo',
-            definitions: 'This is the definition'
+            definitions: 'This is the definition',
         },
         {
             noteId: 1,
             text: 'der Bar',
-            definitions: 'This is the definition'
+            definitions: 'This is the definition',
         },
         {
             noteId: 2,
             text: 'die FooBaz',
-            definitions: 'This is the second definition'
+            definitions: 'This is the second definition',
         },
     ]);
 });

@@ -36,7 +36,8 @@ export async function fetchNotesFromAnki(deckName: string): Promise<NoteForProce
             noteId: note.noteId,
             text: note.fields.Simplified.value,
             // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-            definitions: ((): string => note.fields.Meaning ? note.fields.Meaning.value : note.fields.Definitions.value)()
+            definitions: ((): string =>
+                note.fields.Meaning ? note.fields.Meaning.value : note.fields.Definitions.value)(),
         };
     });
 
@@ -44,7 +45,7 @@ export async function fetchNotesFromAnki(deckName: string): Promise<NoteForProce
         return {
             noteId: note.noteId,
             text: filterNoteContent(note.text),
-            definitions: filterNoteContent(note.definitions)
+            definitions: filterNoteContent(note.definitions),
         };
     });
 

@@ -1,31 +1,30 @@
-import type { VocabularyExamples } from "../openai/typechat-response-schema";
+import type { NoteForProcessing } from '../anki';
+import type { VocabularyExamples, VocabularyExamplesMerged } from '../openai/typechat-response-schema';
 
-export const  mergeExamples = (examples: VocabularyExamples[]): VocabularyExamples[] => {
-       const uniqueExamplesMap = new Map<number, string[]>();
+export const mergeExamples = (
+    originalNote: NoteForProcessing,
+    examples: VocabularyExamples[],
+): VocabularyExamplesMerged => {
+    const mergedExamples: VocabularyExamplesMerged = {
+        id: originalNote.noteId,
+        text: originalNote.text,
+        partsOfSpeech: [],
+        exampleSentences: [],
+    };
 
-    // Iterate through examples and store unique example sentences by ID
     examples.forEach((example) => {
-        if (uniqueExamplesMap.has(example.id)) {
-            // If ID exists in the map, merge example sentences
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const existingSentences = uniqueExamplesMap.get(example.id)!;
-            uniqueExamplesMap.set(
-                example.id,
-                [...existingSentences, ...example.exampleSentences.filter(sentence =>
-                    !existingSentences.includes(sentence)
-                )]
-            );
-        } else {
-            // If ID doesn't exist, add a new entry to the map
-            uniqueExamplesMap.set(example.id, example.exampleSentences);
+        // Merge parts of speech
+        if (!mergedExamples.partsOfSpeech.includes(example.partsOfSpeech)) {
+            mergedExamples.partsOfSpeech.push(example.partsOfSpeech);
         }
+
+        // Merge example sentences and remove duplicates
+        example.exampleSentences.forEach((sentence) => {
+            if (!mergedExamples.exampleSentences.includes(sentence)) {
+                mergedExamples.exampleSentences.push(sentence);
+            }
+        });
     });
 
-    // Convert uniqueExamplesMap back to an array of Example objects
-    const uniqueExamples: VocabularyExamples[] = [];
-    uniqueExamplesMap.forEach((exampleSentences, id) => {
-        uniqueExamples.push({ id, exampleSentences });
-    });
-
-    return uniqueExamples;
-  }
+    return mergedExamples;
+};
