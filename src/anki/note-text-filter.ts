@@ -19,7 +19,6 @@ export const splitMultiTerms = (notes: NoteForProcessing[]): NoteForProcessing[]
             return {
                 noteId: note.noteId,
                 text: noteTextSplit.trim(),
-                definitions: note.definitions,
             };
         });
         newNotes.push(...newNotesForNote);

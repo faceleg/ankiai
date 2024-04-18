@@ -15,14 +15,12 @@ export interface NoteFields extends NotesInfoItemFields {
     Audio: NotesInfoItemField;
     Examples: NotesInfoItemField;
     Meaning: NotesInfoItemField;
-    Definitions: NotesInfoItemField;
     Image: NotesInfoItemField;
 }
 
 export interface NoteForProcessing {
     noteId: NoteId;
-    text: string; // FrontText in Anki
-    definitions: string;
+    text: string;
 }
 
 export async function fetchNotesFromAnki(deckName: string): Promise<NoteForProcessing[]> {
@@ -34,10 +32,7 @@ export async function fetchNotesFromAnki(deckName: string): Promise<NoteForProce
     const notesForProcessing = notesWithoutExamples.map((note): NoteForProcessing => {
         return {
             noteId: note.noteId,
-            text: note.fields.Simplified.value,
-            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-            definitions: ((): string =>
-                note.fields.Meaning ? note.fields.Meaning.value : note.fields.Definitions.value)(),
+            text: note.fields.Simplified.value
         };
     });
 
@@ -45,7 +40,6 @@ export async function fetchNotesFromAnki(deckName: string): Promise<NoteForProce
         return {
             noteId: note.noteId,
             text: filterNoteContent(note.text),
-            definitions: filterNoteContent(note.definitions),
         };
     });
 

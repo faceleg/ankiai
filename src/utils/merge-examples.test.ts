@@ -7,7 +7,6 @@ describe('merge-examples', () => {
         const note: NoteForProcessing = {
             noteId: 5,
             text: '又',
-            definitions: 'none',
         };
         const response = {
             items: [

@@ -30,13 +30,11 @@ describe('Note content filtering', () => {
             {
                 noteId: 1,
                 text: 'der Foo, der Bar',
-                definitions: 'This is the definition',
             },
 
             {
                 noteId: 2,
                 text: 'die FooBaz',
-                definitions: 'This is the second definition',
             },
         ];
 
@@ -44,17 +42,14 @@ describe('Note content filtering', () => {
             {
                 noteId: 1,
                 text: 'der Foo',
-                definitions: 'This is the definition',
             },
             {
                 noteId: 1,
                 text: 'der Bar',
-                definitions: 'This is the definition',
             },
             {
                 noteId: 2,
                 text: 'die FooBaz',
-                definitions: 'This is the second definition',
             },
         ]);
     });

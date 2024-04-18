@@ -1,68 +1,13 @@
 import * as dotenv from 'dotenv';
-import { fetchExample } from './openai/get-sentences-from-chatgpt';
 import { logger } from './utils/logger';
-import { NoteForProcessing, fetchNotesFromAnki, updateNote } from './anki';
-import sleep from './utils/sleep';
-import { removeSentencesWithoutCharacter } from './utils/remove-sentences-without-character';
-import type { VocabularyExamples } from './openai/typechat-response-schema';
+import { fetchNotesFromAnki } from './anki';
+import { concurrentProcessor } from './utils/concurrent-processor';
+import { primeProcessNote } from './utils/process-note';
 
-const MAX_NOTES_PROCESSED_AT_ONCE = 2;
+const MAX_NOTES_PROCESSED_AT_ONCE = 4;
 const MAX_NOTES_PROCESSED_AT_ONE_RUN = 400;
 
 let notesProcessedCount = 0;
-
-function capitaliseFirstLetter(str: string): string {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-const formatExamplesForAnki = (examples: VocabularyExamples[], note: NoteForProcessing): string[] => {
-    const ankiExamples: string[] = [];
-    for (const example of examples) {
-        // Remove sentences that do not contain the target word
-        const filteredExampleSentences = removeSentencesWithoutCharacter(example.exampleSentences, note.text);
-        if (example.exampleSentences.length !== filteredExampleSentences.length) {
-            for (const exampleSentence of example.exampleSentences) {
-                if (!example.exampleSentences.includes(note.text)) {
-                    console.error(`${note.text} is not present in ${exampleSentence}.`);
-                    console.error(
-                        `Adding ${filteredExampleSentences.length} examples to card, filtered from ${example.exampleSentences.length}.`,
-                    );
-                }
-            }
-        }
-
-        // Only add the part of speech section if there are examples
-        if (filteredExampleSentences.length > 0) {
-            ankiExamples.push(
-                `<div class="char_examples-parts-of-speech">${capitaliseFirstLetter(example.partsOfSpeech)}</div>`,
-            );
-            for (const exampleSentence of filteredExampleSentences) {
-                ankiExamples.push(`<div class="char_example">${exampleSentence}</div>`);
-            }
-        }
-    }
-
-    return ankiExamples;
-};
-
-const processNote = async (ankiLanguage: string, noteForProcessing: NoteForProcessing) => {
-    const examplesFromChatGPT = await fetchExample(ankiLanguage, noteForProcessing);
-
-    const fieldText = formatExamplesForAnki(examplesFromChatGPT, noteForProcessing).join('');
-
-    const noteId = noteForProcessing.noteId;
-    const noteForAnki = {
-        id: +noteId,
-        fields: {
-            Examples: fieldText,
-        },
-    };
-
-    // logger.verbose(noteForAnki);
-
-    await updateNote(noteForAnki);
-    return await sleep(100);
-};
 
 // const testApiWithoutUpdating = async () => {
 //     logger.info(
@@ -126,16 +71,18 @@ void (async function () {
             break;
         }
 
-        const notesForProcessing = notes.slice(0, MAX_NOTES_PROCESSED_AT_ONCE);
-        logger.info(`Processing batch of ${notesForProcessing.length} notes.`);
+        await concurrentProcessor(notes, MAX_NOTES_PROCESSED_AT_ONCE, primeProcessNote(ankiLanguage));
 
-        await Promise.all(notesForProcessing.map((note) => processNote(ankiLanguage, note)));
+        // const notesForProcessing = notes.slice(0, MAX_NOTES_PROCESSED_AT_ONCE);
+        // logger.info(`Processing batch of ${notesForProcessing.length} notes.`);
 
-        notesProcessedCount += notesForProcessing.length;
-        if (notesProcessedCount >= MAX_NOTES_PROCESSED_AT_ONE_RUN) {
-            logger.info(`Processed ${notesProcessedCount} notes, quiting.`);
-            console.dir(notes.map((note) => note.text).join(', '));
-            break;
-        }
+        // await Promise.all(notesForProcessing.map((note) => processNote(ankiLanguage, note)));
+
+        // notesProcessedCount += notesForProcessing.length;
+        // if (notesProcessedCount >= MAX_NOTES_PROCESSED_AT_ONE_RUN) {
+        //     logger.info(`Processed ${notesProcessedCount} notes, quiting.`);
+        //     console.dir(notes.map((note) => note.text).join(', '));
+        //     break;
+        // }
     }
 })();
