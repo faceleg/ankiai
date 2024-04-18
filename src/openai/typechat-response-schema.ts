@@ -8,10 +8,3 @@ export interface VocabularyExamples {
     exampleSentences: string[];
     partsOfSpeech: string;
 }
-
-export interface VocabularyExamplesMerged {
-    id: number;
-    text: string;
-    exampleSentences: string[];
-    partsOfSpeech: string[];
-}

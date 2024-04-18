@@ -1,5 +1,12 @@
 import type { NoteForProcessing } from '../anki';
-import type { VocabularyExamples, VocabularyExamplesMerged } from '../openai/typechat-response-schema';
+import type { VocabularyExamples } from '../openai/typechat-response-schema';
+
+export interface VocabularyExamplesMerged {
+    id: number;
+    text: string;
+    exampleSentences: string[];
+    partsOfSpeech: string[];
+}
 
 export const mergeExamples = (
     originalNote: NoteForProcessing,

@@ -12,7 +12,7 @@ export const isSentence = (input: string): boolean => {
 };
 
 export const splitMultiTerms = (notes: NoteForProcessing[]): NoteForProcessing[] => {
-    const newNotes = [];
+    const newNotes: NoteForProcessing[] = [];
     for (const note of notes) {
         const noteTextSplits = note.text.split(',');
         const newNotesForNote = noteTextSplits.map((noteTextSplit): NoteForProcessing => {
