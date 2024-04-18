@@ -6,7 +6,7 @@ import sleep from './utils/sleep';
 import { removeSentencesWithoutCharacter } from './utils/remove-sentences-without-character';
 import type { VocabularyExamples } from './openai/typechat-response-schema';
 
-const MAX_NOTES_PROCESSED_AT_ONCE = 5;
+const MAX_NOTES_PROCESSED_AT_ONCE = 2;
 const MAX_NOTES_PROCESSED_AT_ONE_RUN = 400;
 
 let notesProcessedCount = 0;
