@@ -11,22 +11,6 @@ const MAX_NOTES_PROCESSED_AT_ONE_RUN = 400;
 
 let notesProcessedCount = 0;
 
-// Sometimes ChatGPT fails repeatedly with a word, these have to be added manually
-const skipList: string[] = [
-    // Not yet manually recorded
-    // "园地",
-    // "无论如何",
-    // "豪华",
-    // "人体",
-    // "堕落",
-    // "刹车",
-    // "巡逻",
-    // "煎",
-    // "召集",
-    // "纯洁",
-    // "休想",
-];
-
 function capitaliseFirstLetter(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -62,11 +46,6 @@ const formatExamplesForAnki = (examples: VocabularyExamples[], note: NoteForProc
 };
 
 const processNote = async (ankiLanguage: string, noteForProcessing: NoteForProcessing) => {
-    if (skipList.includes(noteForProcessing.text)) {
-        logger.info(`${noteForProcessing.text} is in the skip list, skipping`);
-        return;
-    }
-
     const examplesFromChatGPT = await fetchExample(ankiLanguage, noteForProcessing);
 
     const fieldText = formatExamplesForAnki(examplesFromChatGPT, noteForProcessing).join('');
@@ -158,7 +137,7 @@ void (async function () {
         const notesForProcessing = notes.slice(0, MAX_NOTES_PROCESSED_AT_ONCE);
         logger.info(`Processing batch of ${notesForProcessing.length} notes.`);
 
-        await Promise.all(notesForProcessing.map((note) => processNote(ankiDeck, note)));
+        await Promise.all(notesForProcessing.map((note) => processNote(ankiLanguage, note)));
 
         notesProcessedCount += notesForProcessing.length;
         if (notesProcessedCount >= MAX_NOTES_PROCESSED_AT_ONE_RUN) {
