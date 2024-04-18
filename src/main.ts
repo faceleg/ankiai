@@ -64,14 +64,6 @@ const processNote = async (ankiLanguage: string, noteForProcessing: NoteForProce
     return await sleep(100);
 };
 
-function removeElements(sourceList: NoteForProcessing[], elementsToRemove: string[]): NoteForProcessing[] {
-    // Create a set from elementsToRemove for faster lookup
-    const elementsToRemoveSet = new Set(elementsToRemove);
-
-    // Filter elements from sourceList that are not in elementsToRemoveSet
-    return sourceList.filter((item) => !elementsToRemoveSet.has(item.text));
-}
-
 // const testApiWithoutUpdating = async () => {
 //     logger.info(
 //         await Promise.all([
@@ -128,7 +120,7 @@ void (async function () {
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition,no-constant-condition
     while (true) {
-        const notes = removeElements(await fetchNotesFromAnki(ankiDeck), skipList);
+        const notes = await fetchNotesFromAnki(ankiDeck);
         logger.info(`Found ${notes.length} notes eligible for fetching`);
         if (notes.length === 0) {
             break;
