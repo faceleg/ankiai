@@ -1,8 +1,8 @@
-import { NoteForProcessing, updateNote } from "../anki";
-import { formatExamplesForAnki } from "../anki/format-items-for-anki";
-import { fetchExample } from "../openai/get-sentences-from-chatgpt";
-import { logger } from "./logger";
-import sleep from "./sleep";
+import { NoteForProcessing, updateNote } from '../anki';
+import { formatExamplesForAnki } from '../anki/format-items-for-anki';
+import { fetchExample } from '../openai/get-sentences-from-chatgpt';
+import { logger } from './logger';
+import sleep from './sleep';
 
 export interface ProcessNote {
     (noteForProcessing: NoteForProcessing): Promise<void>;
@@ -24,6 +24,6 @@ export const primeProcessNote = (ankiLanguage: string): ProcessNote => {
 
         await updateNote(noteForAnki);
         logger.debug(`Updated Anki with ${noteForProcessing.text}`);
-        return await sleep(250);
+        // return await sleep(250);
     };
-}
+};

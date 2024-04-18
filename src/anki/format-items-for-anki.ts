@@ -1,10 +1,10 @@
-import { NoteForProcessing } from "../anki";
-import { VocabularyExamples } from "../openai/typechat-response-schema";
-import { removeSentencesWithoutCharacter } from "../utils/remove-sentences-without-character";
+import { NoteForProcessing } from '../anki';
+import { VocabularyExamples } from '../openai/typechat-response-schema';
+import { removeSentencesWithoutCharacter } from '../utils/remove-sentences-without-character';
 
 const capitaliseFirstLetter = (str: string): string => {
     return str.charAt(0).toUpperCase() + str.slice(1);
-}
+};
 
 export const formatExamplesForAnki = (examples: VocabularyExamples[], note: NoteForProcessing): string[] => {
     const ankiExamples: string[] = [];

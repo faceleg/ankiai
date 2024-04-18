@@ -15,7 +15,7 @@
         "ci-build": "eslint . --max-warnings 0 && prettier --check . && jest"
     },
     "dependencies": {
-        "dotenv": "^16.4.5",
+        "dotenv-extended": "^2.9.0",
         "typechat": "^0.1.0",
         "winston": "^3.13.0"
     },

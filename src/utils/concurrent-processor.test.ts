@@ -6,8 +6,8 @@ import { concurrentProcessor } from './concurrent-processor';
 jest.mock('./logger', () => ({
     logger: {
         info: jest.fn(),
-        debug: jest.fn()
-    }
+        debug: jest.fn(),
+    },
 }));
 
 const mockProcessItem = jest.fn().mockImplementation((item: any) => {

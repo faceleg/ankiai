@@ -32,7 +32,7 @@ export async function fetchNotesFromAnki(deckName: string): Promise<NoteForProce
     const notesForProcessing = notesWithoutExamples.map((note): NoteForProcessing => {
         return {
             noteId: note.noteId,
-            text: note.fields.Simplified.value
+            text: note.fields.Simplified.value,
         };
     });
 
