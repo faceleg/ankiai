@@ -25,7 +25,7 @@ Please find the possible usages this word: ${note.text}, and generate 3 example 
 
 The sentences should be medium or longer length and complexity of HSK5 or higher. Each sentence must contain the the word. All sentences provided for the word must be unique.
 
-JSON must be returned as an array of objects, with one object per part of speech for the word. You must return valid JSON. The array of sentences must not have a trailing comma.`;
+JSON must be returned as an array of objects, with one object per part of speech for the word. You must return valid JSON.`;
 
     logger.debug(exampleSentencesPrompt);
 
