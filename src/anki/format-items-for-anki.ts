@@ -14,10 +14,7 @@ export const formatExamplesForAnki = (examples: VocabularyExamples[], note: Note
         if (example.exampleSentences.length !== filteredExampleSentences.length) {
             for (const exampleSentence of example.exampleSentences) {
                 if (!example.exampleSentences.includes(note.text)) {
-                    console.error(`${note.text} is not present in ${exampleSentence}.`);
-                    console.error(
-                        `Adding ${filteredExampleSentences.length} examples to card, filtered from ${example.exampleSentences.length}.`,
-                    );
+                    console.error(`"${note.text}" is not present in "${exampleSentence}"`);
                 }
             }
         }
@@ -31,6 +28,10 @@ export const formatExamplesForAnki = (examples: VocabularyExamples[], note: Note
                 ankiExamples.push(`<div class="char_example">${exampleSentence}</div>`);
             }
         }
+    }
+
+    if (ankiExamples.length === 0) {
+        console.error(`Found 0 examples for "${note.text}"`);
     }
 
     return ankiExamples;

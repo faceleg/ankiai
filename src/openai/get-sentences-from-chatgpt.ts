@@ -32,7 +32,7 @@ JSON must be returned as an array of objects, with one object per part of speech
     const exampleSentencesResponse = await exampleSentencesTranslator.translate(exampleSentencesPrompt);
 
     if (!exampleSentencesResponse.success) {
-        logger.error({ note, exampleSentencesResponse });
+        console.dir({ note, exampleSentencesResponse }, { depth: 15});
         throw new Error('Error fetching data from chatGPT: ' + exampleSentencesResponse.message);
     } else {
         logger.debug(exampleSentencesResponse.data.items);
