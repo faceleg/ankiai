@@ -32,6 +32,7 @@ export const formatExamplesForAnki = (examples: VocabularyExamples[], note: Note
 
     if (ankiExamples.length === 0) {
         console.error(`Found 0 examples for "${note.text}"`);
+        ankiExamples.push('<div class="char_examples-parts-of-speech">No examples found</div>')
     }
 
     return ankiExamples;
